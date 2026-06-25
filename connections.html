@@ -144,12 +144,28 @@
     </a>
   </div>
 
-  <!-- ====== MUSIC · Silent Hill 3, "Please Love Me... Once More" by Akira Yamaoka ======
-       Press play to listen. Change the song, swap the track ID in the src. -->
-  <div class="player">
-    <div class="cap">&#9834; Now Playing · Please Love Me... Once More</div>
-    <iframe src="https://open.spotify.com/embed/track/08T3IK9WOL8aMbjKF5fs6v?theme=0" height="80" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-  </div>
+<!-- ====== MUSIC · autoplays on first click/tap · upload song.mp3 next to this file ====== -->
+<div class="player">
+  <div class="cap">&#9834; Now Playing · Please Love Me... Once More</div>
+  <audio id="bgm" loop preload="auto" src="song.mp3"></audio>
+  <button id="mute" type="button" style="margin:10px auto 2px;font-family:var(--type);font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:8px;padding:7px 13px;">&#9835; Sound on</button>
+</div>
+<script>
+(function(){
+  var a=document.getElementById('bgm'), b=document.getElementById('mute');
+  if(!a) return;
+  a.volume=0.5;
+  var evts=['pointerdown','keydown','touchstart'];
+  function start(){ a.play().then(function(){ evts.forEach(function(ev){window.removeEventListener(ev,start);}); }).catch(function(){}); }
+  start();
+  evts.forEach(function(ev){ window.addEventListener(ev,start,{passive:true}); });
+  b.addEventListener('click',function(e){
+    e.stopPropagation();
+    if(a.paused){ a.play(); b.innerHTML='&#9835; Sound on'; }
+    else { a.pause(); b.innerHTML='&#9835; Sound off'; }
+  });
+})();
+</script>
 
   <div class="foot">Inspired by Silent Hill</div>
   <a class="back" href="index.html">&larr; back to site</a>
